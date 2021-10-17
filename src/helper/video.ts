@@ -114,7 +114,7 @@ JSVideo.prototype = {
     this.currentObserve = new MutationObserver((mutations) => {
       console.log(mutations);
       mutations.forEach((mutation) => {
-        const { type, target, oldValue, attributeName, addedNodes } = mutation;
+        const { type, target, oldValue, attributeName, addedNodes, removedNodes } = mutation;
         console.log(type);
 
         switch (type) {
@@ -126,7 +126,14 @@ JSVideo.prototype = {
           case "childList":
             this.setAttributeAction(target, {
               type: ACTION_TYPE_Element,
-              addedNodes: Array.from(addedNodes, (el) => this.serialization(el)),
+              //新增的node 保存的是序列化的dom
+              addedNodes: Array.from(addedNodes, (el) =>
+                this.serialization(el)
+              ),
+              //删除的node 保存的是node 对应的id
+              removedNodes: Array.from(removedNodes, (el) =>
+                this.idMap.get(el)
+              ),
             });
         }
       });
@@ -193,7 +200,7 @@ JSVideo.prototype = {
   setAction(element, otherParam = {}) {
     //由于element是对象，因此Map中的key会自动更新
     const id = this.idMap.get(element);
-    console.log("idMap", 'tagId', id, element);
+    console.log("idMap", "tagId", id, element);
     const action = Object.assign(
       this.parseElement(element, id),
       { timestamp: Date.now() },
@@ -239,20 +246,33 @@ JSVideo.prototype = {
             //触发defineProperty拦截，拆分成两个插件会避免该问题
             action.value && (element.value = action.value);
             break;
-            //节点修改
+          //节点修改
           case ACTION_TYPE_Element:
             console.log("replay element", action.id, element);
-            action.addedNodes.forEach(ch => {
+            //添加节点
+            action.addedNodes.forEach((ch) => {
               let el = this.createElement(ch);
-              console.log(ch, el);
-              //添加节点
+              console.log('++添加节点',ch, el);
               element.appendChild(el);
+            });
+            //删除节点
+            action.removedNodes.forEach((id) => {
+              let el = this.idMap.get(id);
+              console.log('--删除节点', id, el);
+              element.removeChild(el);
             });
             break;
         }
       }
       startTime += timeOffset; //最大程度的模拟真实的时间差
-      console.log('剩余动作:',this.actions.length,'tagId:', action.id, startTime);
+      console.log(
+        ">>>>>剩余动作:",
+        this.actions.length,
+        "tagId:",
+        action.id,
+        "startTime:",
+        startTime
+      );
       if (this.actions.length > 0) {
         //当还有动作时，继续调用requestAnimationFrame()
         requestAnimationFrame(state);

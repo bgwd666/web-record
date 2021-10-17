@@ -341,7 +341,8 @@ JSVideo.prototype = {
             target = mutation.target,
             oldValue = mutation.oldValue,
             attributeName = mutation.attributeName,
-            addedNodes = mutation.addedNodes;
+            addedNodes = mutation.addedNodes,
+            removedNodes = mutation.removedNodes;
         console.log(type);
 
         switch (type) {
@@ -356,8 +357,13 @@ JSVideo.prototype = {
           case "childList":
             _this4.setAttributeAction(target, {
               type: ACTION_TYPE_Element,
+              //新增的node 保存的是序列化的dom
               addedNodes: Array.from(addedNodes, function (el) {
                 return _this4.serialization(el);
+              }),
+              //删除的node 保存的是node 对应的id
+              removedNodes: Array.from(removedNodes, function (el) {
+                return _this4.idMap.get(el);
               })
             });
 
@@ -433,7 +439,7 @@ JSVideo.prototype = {
     var otherParam = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     //由于element是对象，因此Map中的key会自动更新
     var id = this.idMap.get(element);
-    console.log("idMap", 'tagId', id, element);
+    console.log("idMap", "tagId", id, element);
     var action = Object.assign(this.parseElement(element, id), {
       timestamp: Date.now()
     }, otherParam);
@@ -489,13 +495,20 @@ JSVideo.prototype = {
           //节点修改
 
           case ACTION_TYPE_Element:
-            console.log("replay element", action.id, element);
+            console.log("replay element", action.id, element); //添加节点
+
             action.addedNodes.forEach(function (ch) {
               var el = _this7.createElement(ch);
 
-              console.log(ch, el); //添加节点
-
+              console.log('++添加节点', ch, el);
               element.appendChild(el);
+            }); //删除节点
+
+            action.removedNodes.forEach(function (id) {
+              var el = _this7.idMap.get(id);
+
+              console.log('--删除节点', id, el);
+              element.removeChild(el);
             });
             break;
         }
@@ -503,7 +516,7 @@ JSVideo.prototype = {
 
       startTime += timeOffset; //最大程度的模拟真实的时间差
 
-      console.log('剩余动作:', _this7.actions.length, 'tagId:', action.id, startTime);
+      console.log(">>>>>剩余动作:", _this7.actions.length, "tagId:", action.id, "startTime:", startTime);
 
       if (_this7.actions.length > 0) {
         //当还有动作时，继续调用requestAnimationFrame()
@@ -629,9 +642,8 @@ var Home = function Home() {
 
 
   var handleAddCard = function handleAddCard() {
-    setCardList([].concat(_toConsumableArray(cardList), [cardList.length + 1])); // (
-    //   document.querySelector(".card-item") as any
-    // ).style.backgroundColor = `#${Math.random().toString(16).slice(-6)}`;
+    setCardList([].concat(_toConsumableArray(cardList), [cardList.length + 1]));
+    document.querySelector(".card-item").style.backgroundColor = "#".concat(Math.random().toString(16).slice(-6));
   }; //重置卡片
 
 

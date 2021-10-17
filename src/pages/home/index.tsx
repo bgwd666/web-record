@@ -29,9 +29,9 @@ const Home = () => {
   //添加卡片
   const handleAddCard = () => {
     setCardList([...cardList, cardList.length + 1]);
-    // (
-    //   document.querySelector(".card-item") as any
-    // ).style.backgroundColor = `#${Math.random().toString(16).slice(-6)}`;
+    (
+      document.querySelector(".card-item") as any
+    ).style.backgroundColor = `#${Math.random().toString(16).slice(-6)}`;
   };
 
   //重置卡片
