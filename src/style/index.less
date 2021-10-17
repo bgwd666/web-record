@@ -1,0 +1,77 @@
+//一些辅助样式, 如字体相关 边距相关
+@import "./tools.less";
+
+html,
+body {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  color: #375375;
+}
+
+li {
+  list-style: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.box-cont {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.theme-btn {
+  height: 32px;
+  padding: 4px 16px;
+  background-color: #2361f9;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: .3s;
+  outline: none;
+  &:hover {
+    background-color: darken(#2361f9, 6%);
+  }
+  &:active {
+    background-color: darken(#2361f9, 10%);
+    box-shadow: 0 0 2px 3px #2360f944;
+  }
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-center {
+  .flex();
+  justify-content: center;
+}
+
+.flex-ard {
+  .flex();
+  justify-content: space-around;
+}
+
+.flex-bt {
+  .flex();
+  justify-content: space-between;
+}
+
+.flex-cl {
+  .flex();
+  flex-direction: column;
+  justify-content: center;
+}

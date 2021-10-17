@@ -1,0 +1,369 @@
+.font-size-12 {
+  font-size: 12px;
+}
+.font-size-18 {
+  font-size: 18px;
+}
+.font-size-20 {
+  font-size: 20px;
+}
+.font-size-24 {
+  font-size: 24px;
+}
+.font-size-32 {
+  font-size: 32px;
+}
+.font-size-40 {
+  font-size: 40px;
+}
+.font-bold {
+  font-weight: bold;
+}
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-center {
+  text-align: center;
+}
+.m-8 {
+  margin: 8px;
+}
+.m-16 {
+  margin: 16px;
+}
+.m-12 {
+  margin: 12px;
+}
+.m-24 {
+  margin: 24px;
+}
+.m-32 {
+  margin: 32px;
+}
+.m-40 {
+  margin: 40px;
+}
+.m-48 {
+  margin: 48px;
+}
+.m-56 {
+  margin: 56px;
+}
+.m-64 {
+  margin: 64px;
+}
+.mr-8 {
+  margin-right: 8px;
+}
+.mr-16 {
+  margin-right: 16px;
+}
+.mr-12 {
+  margin-right: 12px;
+}
+.mr-24 {
+  margin-right: 24px;
+}
+.mr-32 {
+  margin-right: 32px;
+}
+.mr-40 {
+  margin-right: 40px;
+}
+.mr-48 {
+  margin-right: 48px;
+}
+.mr-56 {
+  margin-right: 56px;
+}
+.mr-64 {
+  margin-right: 64px;
+}
+.ml-8 {
+  margin-left: 8px;
+}
+.ml-16 {
+  margin-left: 16px;
+}
+.ml-12 {
+  margin-left: 12px;
+}
+.ml-24 {
+  margin-left: 24px;
+}
+.ml-32 {
+  margin-left: 32px;
+}
+.ml-40 {
+  margin-left: 40px;
+}
+.ml-48 {
+  margin-left: 48px;
+}
+.ml-56 {
+  margin-left: 56px;
+}
+.ml-64 {
+  margin-left: 64px;
+}
+.mt-8 {
+  margin-top: 8px;
+}
+.mt-16 {
+  margin-top: 16px;
+}
+.mt-12 {
+  margin-top: 12px;
+}
+.mt-24 {
+  margin-top: 24px;
+}
+.mt-32 {
+  margin-top: 32px;
+}
+.mt-40 {
+  margin-top: 40px;
+}
+.mt-48 {
+  margin-top: 48px;
+}
+.mt-56 {
+  margin-top: 56px;
+}
+.mt-64 {
+  margin-top: 64px;
+}
+.mb-8 {
+  margin-bottom: 8px;
+}
+.mb-16 {
+  margin-bottom: 16px;
+}
+.mb-12 {
+  margin-bottom: 12px;
+}
+.mb-24 {
+  margin-bottom: 24px;
+}
+.mb-32 {
+  margin-bottom: 32px;
+}
+.mb-40 {
+  margin-bottom: 40px;
+}
+.mb-48 {
+  margin-bottom: 48px;
+}
+.mb-56 {
+  margin-bottom: 56px;
+}
+.mb-64 {
+  margin-bottom: 64px;
+}
+.p-8 {
+  padding: 8px;
+}
+.p-16 {
+  padding: 16px;
+}
+.p-12 {
+  padding: 12px;
+}
+.p-24 {
+  padding: 24px;
+}
+.p-32 {
+  padding: 32px;
+}
+.p-40 {
+  padding: 40px;
+}
+.p-48 {
+  padding: 48px;
+}
+.p-56 {
+  padding: 56px;
+}
+.p-64 {
+  padding: 64px;
+}
+.pr-8 {
+  padding-right: 8px;
+}
+.pr-16 {
+  padding-right: 16px;
+}
+.pr-12 {
+  padding-right: 12px;
+}
+.pr-24 {
+  padding-right: 24px;
+}
+.pr-32 {
+  padding-right: 32px;
+}
+.pr-40 {
+  padding-right: 40px;
+}
+.pr-48 {
+  padding-right: 48px;
+}
+.pr-56 {
+  padding-right: 56px;
+}
+.pr-64 {
+  padding-right: 64px;
+}
+.pl-8 {
+  padding-left: 8px;
+}
+.pl-16 {
+  padding-left: 16px;
+}
+.pl-12 {
+  padding-left: 12px;
+}
+.pl-24 {
+  padding-left: 24px;
+}
+.pl-32 {
+  padding-left: 32px;
+}
+.pl-40 {
+  padding-left: 40px;
+}
+.pl-48 {
+  padding-left: 48px;
+}
+.pl-56 {
+  padding-left: 56px;
+}
+.pl-64 {
+  padding-left: 64px;
+}
+.pt-8 {
+  padding-top: 8px;
+}
+.pt-16 {
+  padding-top: 16px;
+}
+.pt-12 {
+  padding-top: 12px;
+}
+.pt-24 {
+  padding-top: 24px;
+}
+.pt-32 {
+  padding-top: 32px;
+}
+.pt-40 {
+  padding-top: 40px;
+}
+.pt-48 {
+  padding-top: 48px;
+}
+.pt-56 {
+  padding-top: 56px;
+}
+.pt-64 {
+  padding-top: 64px;
+}
+.pb-8 {
+  padding-bottom: 8px;
+}
+.pb-16 {
+  padding-bottom: 16px;
+}
+.pb-12 {
+  padding-bottom: 12px;
+}
+.pb-24 {
+  padding-bottom: 24px;
+}
+.pb-32 {
+  padding-bottom: 32px;
+}
+.pb-40 {
+  padding-bottom: 40px;
+}
+.pb-48 {
+  padding-bottom: 48px;
+}
+.pb-56 {
+  padding-bottom: 56px;
+}
+.pb-64 {
+  padding-bottom: 64px;
+}
+html,
+body {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  color: #375375;
+}
+li {
+  list-style: none;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+.box-cont {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.theme-btn {
+  height: 32px;
+  padding: 4px 16px;
+  background-color: #2361f9;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: 0.3s;
+  outline: none;
+}
+.theme-btn:hover {
+  background-color: #074cf7;
+}
+.theme-btn:active {
+  background-color: #0646e3;
+  box-shadow: 0 0 2px 3px #2360f944;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-ard {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.flex-bt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.flex-cl {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/*# sourceMappingURL=/src.fc45d0fd.css.map */

@@ -1,0 +1,140 @@
+// 辅助
+
+/////////////////////////字体相关
+//字体大小
+.font-size-12 {
+  font-size: 12px;
+}
+
+.font-size-18 {
+  font-size: 18px;
+}
+
+.font-size-20 {
+  font-size: 20px;
+}
+
+.font-size-24 {
+  font-size: 24px;
+}
+
+.font-size-32 {
+  font-size: 32px;
+}
+
+.font-size-40 {
+  font-size: 40px;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/////////////////////////边距相关
+
+// 有8的倍数 8 12 16 24 32 40 48 56 64
+// 用法
+// 比如 mr-8 等于 margin-right: 8px; 
+// 比如 pb-24 等于 padding-bottom: 24px; 
+// <div className="pb-24"></div>
+
+@base: 8;
+
+//mixin 函数
+.coco-mixin(@type, @css) {
+  .@{type}-@{base} {
+    @{css}: @base * 1px;
+  }
+
+  @base2: @base*2;
+
+  .@{type}-@{base2} {
+    @{css}: @base*2px;
+  }
+
+  @base1-5: @base*1.5;
+
+  .@{type}-@{base1-5} {
+    @{css}: @base*1.5px;
+  }
+
+  @base3: @base*3;
+
+  .@{type}-@{base3} {
+    @{css}: @base*3px;
+  }
+
+  @base4: @base*4;
+
+  .@{type}-@{base4} {
+    @{css}: @base*4px;
+  }
+
+  @base5: @base*5;
+
+  .@{type}-@{base5} {
+    @{css}: @base*5px;
+  }
+
+  @base6: @base*6;
+
+  .@{type}-@{base6} {
+    @{css}: @base*6px;
+  }
+
+  @base7: @base*7;
+
+  .@{type}-@{base7} {
+    @{css}: @base*7px;
+  }
+
+  @base8: @base*8;
+
+  .@{type}-@{base8} {
+    @{css}: @base*8px;
+  }
+}
+
+//margin 
+.coco-mixin(m, margin);
+
+//margin-right
+.coco-mixin(mr, margin-right);
+
+//margin-left
+.coco-mixin(ml, margin-left);
+
+//margin-top
+.coco-mixin(mt, margin-top);
+
+//margin-bottom
+.coco-mixin(mb, margin-bottom);
+
+//margin-left margin-right 组合 mx  代表x方向
+// .coco-mixin(mx, margin-left, margin-right);
+
+//padding
+.coco-mixin(p, padding);
+
+//padding-right
+.coco-mixin(pr, padding-right);
+
+//padding-left
+.coco-mixin(pl, padding-left);
+
+//padding-top
+.coco-mixin(pt, padding-top);
+
+//padding-bottom
+.coco-mixin(pb, padding-bottom);
+

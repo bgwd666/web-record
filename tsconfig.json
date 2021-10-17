@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "baseUrl": "src",
+        "paths": {
+            "/src/*": [
+                "*"
+            ]
+        },
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "outDir": "dist",
+        "moduleResolution": "Node",
+        "experimentalDecorators": true,
+        "skipDefaultLibCheck": true,
+        "resolveJsonModule": true,
+        "allowJs": true,
+        "strict": true,
+        "jsx": "react",
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        "target": "esnext",
+        "sourceMap": true,
+        "module": "esnext"
+    },
+    "include": [
+        "src/**/*",
+        "types/"
+    ],
+    "exclude": [
+        "dist/**/*",
+        "shared/tsconfig"
+    ]   
+}
