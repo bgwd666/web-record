@@ -1,6 +1,7 @@
 //@ts-nocheck
 const ACTION_TYPE_ATTRIBUTE = 1; //动作类型 修改元素属性
-const ACTION_TYPE_Element = 2; //动作类型 元素增减
+const ACTION_TYPE_ELEMENT = 2; //动作类型 元素增减
+const ACTION_TYPE_MOUSE = 3; //动作类型 元素增减
 
 /**
  * dom和actions可JSON.stringify()序列化后传递到后台
@@ -13,8 +14,10 @@ function JSVideo() {
   console.log("map", this.idMap);
   this.currentObserve = null;
   this.actions = []; //动作日志
+  this.mouseTimer = null; //鼠标timer
   this.observer();
   this.observerInput();
+  this.observerMouse();
 }
 
 JSVideo.prototype = {
@@ -125,7 +128,7 @@ JSVideo.prototype = {
             break;
           case "childList":
             this.setAttributeAction(target, {
-              type: ACTION_TYPE_Element,
+              type: ACTION_TYPE_ELEMENT,
               //新增的node 保存的是序列化的dom
               addedNodes: Array.from(addedNodes, (el) =>
                 this.serialization(el)
@@ -149,14 +152,30 @@ JSVideo.prototype = {
     });
     //this.currentObserve.disconnect();
   },
+  // 监听鼠标
+  observerMouse() {
+    const mouse = document.createElement('div')
+      mouse.className = 'app-mouse';
+      doc.body.appendChild(mouse)
+    this.mouseTimer = setInterval(() => {
+      console.log('add ACTION_TYPE_MOUSE',);
+
+      this.actions.push({
+        type: ACTION_TYPE_MOUSE,
+        timestamp: Date.now(),
+        pageX: Math.round(Math.random() * 800),
+        pageY: Math.round(Math.random() * 800)
+      })
+    }, 2000)
+  },
   /**
    * 监控文本框的变化
    */
   observerInput() {
     const original = Object.getOwnPropertyDescriptor(
-        HTMLInputElement.prototype,
-        "value"
-      ),
+      HTMLInputElement.prototype,
+      "value"
+    ),
       _this = this;
     //监控通过代码更新的value属性
     Object.defineProperty(HTMLInputElement.prototype, "value", {
@@ -228,8 +247,8 @@ JSVideo.prototype = {
       console.log("action", action);
 
       let element = this.idMap.get(action.id);
-      if (!element) {
-        //取不到的元素直接停止动画
+      if (!element && action.type !== ACTION_TYPE_MOUSE) {
+        //取不到的元素 且不是鼠标动作 直接停止动画
         return;
       }
       //console.log("state action", action, this.actions.length);
@@ -238,7 +257,7 @@ JSVideo.prototype = {
         switch (action.type) {
           //属性
           case ACTION_TYPE_ATTRIBUTE:
-            console.log("replay attributes", action.id, element);
+            console.log("action>>>>>> attributes", action.id, element);
             for (const name in action.attributes) {
               //更新属性
               element.setAttribute(name, action.attributes[name]);
@@ -246,13 +265,14 @@ JSVideo.prototype = {
             //触发defineProperty拦截，拆分成两个插件会避免该问题
             action.value && (element.value = action.value);
             break;
+
           //节点修改
-          case ACTION_TYPE_Element:
-            console.log("replay element", action.id, element);
+          case ACTION_TYPE_ELEMENT:
+            console.log("action>>>>>>> element", action.id, element);
             //添加节点
             action.addedNodes.forEach((ch) => {
               let el = this.createElement(ch);
-              console.log('++添加节点',ch, el);
+              console.log('++添加节点', ch, el);
               element.appendChild(el);
             });
             //删除节点
@@ -261,6 +281,11 @@ JSVideo.prototype = {
               console.log('--删除节点', id, el);
               element.removeChild(el);
             });
+            break;
+
+          //鼠标
+          case ACTION_TYPE_MOUSE:
+            console.log("action>>>>>>> mouse", action);
             break;
         }
       }
@@ -286,6 +311,7 @@ JSVideo.prototype = {
   createIframe() {
     //停止监听
     this.currentObserve.disconnect();
+    window.clearInterval(this.mouseTimer)
 
     let iframe = document.createElement("iframe");
     iframe.setAttribute("sandbox", "allow-same-origin");
