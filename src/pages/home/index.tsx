@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./index.less";
-import PageRecord from "/src/helper/record";
+import webRecord from "/src/helper/record";
 import JSVideo from "/src/helper/video";
 
 const Home = () => {
   const [cardList, setCardList] = useState<number[]>([1]);
-  const pageRecord = new PageRecord();
+  const pageRecord = new webRecord();
   let video = useRef();
 
   useEffect(() => {

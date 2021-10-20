@@ -138,16 +138,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var PageRecord = /*#__PURE__*/function () {
-  function PageRecord() {
-    _classCallCheck(this, PageRecord);
+var webRecord = /*#__PURE__*/function () {
+  function webRecord() {
+    _classCallCheck(this, webRecord);
 
     _defineProperty(this, "eventsList", void 0);
 
     this.eventsList = [];
   }
 
-  _createClass(PageRecord, [{
+  _createClass(webRecord, [{
     key: "init",
     value: function init() {
       console.log('record init');
@@ -168,10 +168,10 @@ var PageRecord = /*#__PURE__*/function () {
     }
   }]);
 
-  return PageRecord;
+  return webRecord;
 }();
 
-var _default = PageRecord;
+var _default = webRecord;
 exports.default = _default;
 },{}],"src/helper/video.ts":[function(require,module,exports) {
 "use strict";
@@ -208,11 +208,12 @@ function JSVideo() {
   this.currentObserve = null;
   this.actions = []; //动作日志
 
-  this.mouseTimer = null; //鼠标timer
+  this.mouseTimer = 0; //鼠标timer
 
   this.observer();
   this.observerInput();
-  this.observerMouse();
+  this.observerMouseFun = this.observerMouse.bind(this);
+  window.addEventListener("mousemove", this.observerMouseFun);
 }
 
 JSVideo.prototype = {
@@ -223,7 +224,7 @@ JSVideo.prototype = {
     var _this2 = this;
 
     if (parent.tagName === "SCRIPT") {
-      return null;
+      return;
     }
 
     var element = this.parseElement(parent);
@@ -234,7 +235,11 @@ JSVideo.prototype = {
     }
 
     Array.from(parent.children, function (child) {
-      element.children.push(_this2.serialization(child));
+      var childEl = _this2.serialization(child);
+
+      if (childEl) {
+        element.children.push(childEl);
+      }
     });
     return element;
   },
@@ -244,7 +249,7 @@ JSVideo.prototype = {
    */
   parseElement: function parseElement(element, id) {
     if (!element) {
-      return null;
+      return;
     }
 
     var attributes = {};
@@ -278,7 +283,7 @@ JSVideo.prototype = {
     var _this3 = this;
 
     if (!obj) {
-      return null;
+      return;
     }
 
     var element = this.createElement(obj);
@@ -302,7 +307,7 @@ JSVideo.prototype = {
    */
   createElement: function createElement(obj) {
     if (!obj) {
-      return null;
+      return;
     }
 
     var element = document.createElement(obj.tagName);
@@ -387,29 +392,25 @@ JSVideo.prototype = {
     }); //this.currentObserve.disconnect();
   },
   // 监听鼠标
-  observerMouse: function observerMouse() {
-    var _this5 = this;
-
-    var mouse = document.createElement('div');
-    mouse.className = 'app-mouse';
-    doc.body.appendChild(mouse);
-    this.mouseTimer = setInterval(function () {
-      console.log('add ACTION_TYPE_MOUSE');
-
-      _this5.actions.push({
+  observerMouse: function observerMouse(e) {
+    if (new Date() - this.mouseTimer > 100) {
+      console.log(e);
+      this.mouseTimer = new Date();
+      console.log("add ACTION_TYPE_MOUSE");
+      this.setAction(document.body, {
         type: ACTION_TYPE_MOUSE,
         timestamp: Date.now(),
-        pageX: Math.round(Math.random() * 800),
-        pageY: Math.round(Math.random() * 800)
+        pageX: e.clientX,
+        pageY: e.clientY
       });
-    }, 2000);
+    }
   },
 
   /**
    * 监控文本框的变化
    */
   observerInput: function observerInput() {
-    var _this7 = this;
+    var _this6 = this;
 
     var original = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value"),
         _this = this; //监控通过代码更新的value属性
@@ -417,11 +418,11 @@ JSVideo.prototype = {
 
     Object.defineProperty(HTMLInputElement.prototype, "value", {
       set: function set(value) {
-        var _this6 = this;
+        var _this5 = this;
 
         console.log("defineProperty", value);
         setTimeout(function () {
-          _this.setAttributeAction(_this6); //异步调用，避免阻塞页面
+          _this.setAttributeAction(_this5); //异步调用，避免阻塞页面
 
         }, 0);
         original.set.call(this, value); //执行原来的set逻辑
@@ -433,7 +434,7 @@ JSVideo.prototype = {
       var text = target.value;
       console.log("input", text);
 
-      _this7.setAttributeAction(target);
+      _this6.setAttributeAction(target);
     }, {
       capture: true //捕获
 
@@ -462,13 +463,13 @@ JSVideo.prototype = {
     var otherParam = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     //由于element是对象，因此Map中的key会自动更新
     var id = this.idMap.get(element);
-    console.log("idMap", "tagId", id, element);
+    console.log("+++++++setAction+++++", otherParam, "tagId", id, element);
     var action = Object.assign(this.parseElement(element, id), {
       timestamp: Date.now()
     }, otherParam);
     this.actions.push(action);
-    console.log("actions", this.actions);
-    console.log("idMap", this.idMap);
+    console.log("all__actions", this.actions);
+    console.log("all__idMap", this.idMap);
   },
   getActions: function getActions() {
     return this.actions;
@@ -478,34 +479,38 @@ JSVideo.prototype = {
    * 回放
    */
   replay: function replay() {
-    var _this8 = this;
+    var _this7 = this;
 
     if (this.actions.length == 0) return;
+    console.log("__________replay_________");
     console.log("new idMap", this.idMap);
     console.log("all actions", this.actions);
+    var appMouse = null;
     var timeOffset = 16.7; //一帧的时间间隔大概为16.7ms
 
     var startTime = this.actions[0].timestamp; //开始时间戳
 
     var state = function state() {
-      var action = _this8.actions[0];
-      console.log("action", action);
+      var action = _this7.actions[0];
 
-      var element = _this8.idMap.get(action.id);
+      var element = _this7.idMap.get(action.id);
 
-      if (!element && action.type !== ACTION_TYPE_MOUSE) {
+      if (!element) {
         //取不到的元素 且不是鼠标动作 直接停止动画
+        console.error("dont's have this element");
         return;
       } //console.log("state action", action, this.actions.length);
 
 
       if (startTime >= action.timestamp) {
-        _this8.actions.shift();
+        console.log("========== current action", action, 'actions left:', _this7.actions.length);
+
+        _this7.actions.shift();
 
         switch (action.type) {
           //属性
           case ACTION_TYPE_ATTRIBUTE:
-            console.log("action>>>>>> attributes", action.id, element);
+            console.log("action>>>>>> [attributes]", 'targetEl', element);
 
             for (var name in action.attributes) {
               //更新属性
@@ -518,37 +523,43 @@ JSVideo.prototype = {
           //节点修改
 
           case ACTION_TYPE_ELEMENT:
-            console.log("action>>>>>>> element", action.id, element); //添加节点
+            console.log("action>>>>>>> [element]", 'targetEl', element); //添加节点
 
             action.addedNodes.forEach(function (ch) {
-              var el = _this8.createElement(ch);
+              var el = _this7.createElement(ch);
 
-              console.log('++添加节点', ch, el);
+              console.log("++add node", ch, el);
               element.appendChild(el);
             }); //删除节点
 
             action.removedNodes.forEach(function (id) {
-              var el = _this8.idMap.get(id);
+              var el = _this7.idMap.get(id);
 
-              console.log('--删除节点', id, el);
+              console.log("--remove node", id, el);
               element.removeChild(el);
             });
             break;
           //鼠标
 
           case ACTION_TYPE_MOUSE:
-            console.log("action>>>>>>> mouse", action);
+            console.log("action>>>>>>> [mouse]", 'targetEl', element);
+            !appMouse && (appMouse = element.querySelector(".app-mouse"));
+            appMouse.style.transform = "translate(".concat(action.pageX, "px,").concat(action.pageY, "px)");
             break;
         }
       }
 
       startTime += timeOffset; //最大程度的模拟真实的时间差
 
-      console.log(">>>>>剩余动作:", _this8.actions.length, "tagId:", action.id, "startTime:", startTime);
-
-      if (_this8.actions.length > 0) {
+      if (_this7.actions.length > 0) {
         //当还有动作时，继续调用requestAnimationFrame()
         requestAnimationFrame(state);
+      } else {
+        // 没有动作了 播放结束
+        console.log("replay end.");
+        setTimeout(function () {
+          document.querySelector("#root").style.display = "block";
+        }, 2000);
       }
     };
 
@@ -559,11 +570,12 @@ JSVideo.prototype = {
    * 创建iframe还原页面
    */
   createIframe: function createIframe() {
-    var _this9 = this;
+    var _this8 = this;
 
     //停止监听
     this.currentObserve.disconnect();
-    window.clearInterval(this.mouseTimer);
+    window.removeEventListener("mousemove", this.observerMouseFun);
+    document.querySelector("#root").style.display = "none";
     var iframe = document.createElement("iframe");
     iframe.setAttribute("sandbox", "allow-same-origin");
     iframe.setAttribute("scrolling", "no");
@@ -574,7 +586,7 @@ JSVideo.prototype = {
     iframe.onload = function () {
       var doc = iframe.contentDocument,
           root = doc.documentElement,
-          html = _this9.deserialization(_this9.dom); //反序列化
+          html = _this8.deserialization(_this8.dom); //反序列化
       //根元素属性附加
 
 
@@ -591,10 +603,14 @@ JSVideo.prototype = {
 
       Array.from(html.children).forEach(function (child) {
         root.appendChild(child);
-      }); //加个定时器只是为了查看方便
+      }); //添加鼠标
+
+      var mouse = document.createElement("div");
+      mouse.className = "app-mouse";
+      doc.body.appendChild(mouse); //加个定时器只是为了查看方便
 
       setTimeout(function () {
-        _this9.replay();
+        _this8.replay();
       }, 2000);
     };
 
@@ -738,7 +754,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65169" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49207" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

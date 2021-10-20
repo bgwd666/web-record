@@ -1,13 +1,15 @@
-class webRecord {
-  public eventsList:[] 
+import { ISerializationDom } from "./publicType";
 
-  constructor() {
+class replayRecord {
+  public eventsList: [];
+
+  constructor(initDom: ISerializationDom) {
     this.eventsList = [];
   }
 
-  init (){
-    console.log('record init');
-    
+  init() {
+    console.log("record init");
+
     const options = {
       childList: true, // 是否观察子节点的变动
       subtree: true, // 是否观察所有后代节点的变动
@@ -17,13 +19,12 @@ class webRecord {
       characterDataOldValue: true, // 是否节点内容或节点文本的变动的旧值
       // attributeFilter: ['class', 'src'] 在此数组中的属性变化时将被忽略
     };
-    
+
     const observer = new MutationObserver((mutationList) => {
-        console.log(mutationList);
-        
+      console.log(mutationList);
     });
     observer.observe(document.documentElement, options);
   }
 }
 
-export default webRecord
+export default replayRecord;
