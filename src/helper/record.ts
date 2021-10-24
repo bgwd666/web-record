@@ -1,4 +1,4 @@
-class webRecord {
+class WebRecord {
   public eventsList:[] 
 
   constructor() {
@@ -26,4 +26,4 @@ class webRecord {
   }
 }
 
-export default webRecord
+export default WebRecord

@@ -1,0 +1,45 @@
+.replay-page {
+  position: relative;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  .close-current-replay {
+    position: absolute;
+    right: 48px;
+    top: 48px;
+    width: 64px;
+    height: 64px;
+    border: 1px solid #ededed;
+    box-shadow: 0 2px 4px #ededed;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 999;
+    &:hover {
+      border-color: #2361f9;
+    }
+  }
+  .replay-cont {
+    .replay-item {
+      width: 600px;
+      height: 60px;
+      border: 1px solid #ededed;
+      box-shadow: 0 3px 6px #ededed;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: 0.3s;
+      &:hover {
+        box-shadow: 0 5px 10px #ececec;
+        border-color: #2361f9;
+      }
+    }
+  }
+}
+//播放沙盒
+#replay-iframe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #fff;
+  z-index: 99;
+}

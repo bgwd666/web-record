@@ -1,5 +1,28 @@
 //一些辅助样式, 如字体相关 边距相关
-@import "./tools.less";
+@import './tools.less';
+//滚动条
+* {
+  box-sizing: border-box;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: hsla(220, 4%, 58%, 0.5);
+    transition: background-color 0.3s;
+
+    &:hover {
+      background: #bbb;
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
 
 html,
 body {
@@ -74,4 +97,14 @@ ul {
   .flex();
   flex-direction: column;
   justify-content: center;
+}
+
+.app-mouse {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  background: url('https://img.tukuppt.com/ad_preview/00/29/44/n0YQFVPBkZ.jpg!/both/32x32');
+  transition: 0.1s;
 }

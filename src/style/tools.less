@@ -50,61 +50,6 @@
 
 @base: 8;
 
-//mixin 函数
-.coco-mixin(@type, @css) {
-  .@{type}-@{base} {
-    @{css}: @base * 1px;
-  }
-
-  @base2: @base*2;
-
-  .@{type}-@{base2} {
-    @{css}: @base*2px;
-  }
-
-  @base1-5: @base*1.5;
-
-  .@{type}-@{base1-5} {
-    @{css}: @base*1.5px;
-  }
-
-  @base3: @base*3;
-
-  .@{type}-@{base3} {
-    @{css}: @base*3px;
-  }
-
-  @base4: @base*4;
-
-  .@{type}-@{base4} {
-    @{css}: @base*4px;
-  }
-
-  @base5: @base*5;
-
-  .@{type}-@{base5} {
-    @{css}: @base*5px;
-  }
-
-  @base6: @base*6;
-
-  .@{type}-@{base6} {
-    @{css}: @base*6px;
-  }
-
-  @base7: @base*7;
-
-  .@{type}-@{base7} {
-    @{css}: @base*7px;
-  }
-
-  @base8: @base*8;
-
-  .@{type}-@{base8} {
-    @{css}: @base*8px;
-  }
-}
-
 //margin 
 .coco-mixin(m, margin);
 
@@ -138,3 +83,27 @@
 //padding-bottom
 .coco-mixin(pb, padding-bottom);
 
+// mixin 函数
+// 举个栗子：
+// .coco-mixin(pb, padding-bottom);
+// 会被转为  .pb-4 { padding-bottom: 4px; } .pb-8 { padding-bottom: 8px; } ...
+.coco-mixin-base(@type, @css, @num) {
+  @name: @base * @num;
+
+  .@{type}-@{name} {
+    @{css}: @base * @num * 1px;
+  }
+}
+
+.coco-mixin(@type, @css) {
+  .coco-mixin-base(@type, @css, 0.5);
+  .coco-mixin-base(@type, @css, 1);
+  .coco-mixin-base(@type, @css, 1.5);
+  .coco-mixin-base(@type, @css, 2);
+  .coco-mixin-base(@type, @css, 3);
+  .coco-mixin-base(@type, @css, 4);
+  .coco-mixin-base(@type, @css, 5);
+  .coco-mixin-base(@type, @css, 6);
+  .coco-mixin-base(@type, @css, 7);
+  .coco-mixin-base(@type, @css, 8);
+}

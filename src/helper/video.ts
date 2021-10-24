@@ -1,7 +1,7 @@
 //@ts-nocheck
 const ACTION_TYPE_ATTRIBUTE = 1; //动作类型 修改元素属性
 const ACTION_TYPE_ELEMENT = 2; //动作类型 元素增减
-const ACTION_TYPE_MOUSE = 3; //动作类型 元素增减
+const ACTION_TYPE_MOUSE = 3; //动作类型 鼠标
 
 /**
  * dom和actions可JSON.stringify()序列化后传递到后台
@@ -36,7 +36,7 @@ JSVideo.prototype = {
     }
     Array.from(parent.children, (child) => {
       const childEl = this.serialization(child);
-      if (childEl) { 
+      if (childEl) {
         element.children.push(childEl);
       }
     });
@@ -262,12 +262,17 @@ JSVideo.prototype = {
       }
       //console.log("state action", action, this.actions.length);
       if (startTime >= action.timestamp) {
-        console.log("========== current action", action, 'actions left:', this.actions.length);
+        console.log(
+          "========== current action",
+          action,
+          "actions left:",
+          this.actions.length
+        );
         this.actions.shift();
         switch (action.type) {
           //属性
           case ACTION_TYPE_ATTRIBUTE:
-            console.log("action>>>>>> [attributes]",'targetEl', element);
+            console.log("action>>>>>> [attributes]", "targetEl", element);
             for (const name in action.attributes) {
               //更新属性
               element.setAttribute(name, action.attributes[name]);
@@ -278,7 +283,7 @@ JSVideo.prototype = {
 
           //节点修改
           case ACTION_TYPE_ELEMENT:
-            console.log("action>>>>>>> [element]",'targetEl', element);
+            console.log("action>>>>>>> [element]", "targetEl", element);
             //添加节点
             action.addedNodes.forEach((ch) => {
               let el = this.createElement(ch);
@@ -295,7 +300,7 @@ JSVideo.prototype = {
 
           //鼠标
           case ACTION_TYPE_MOUSE:
-            console.log("action>>>>>>> [mouse]", 'targetEl', element);
+            console.log("action>>>>>>> [mouse]", "targetEl", element);
             !appMouse && (appMouse = element.querySelector(".app-mouse"));
             appMouse.style.transform = `translate(${action.pageX}px,${action.pageY}px)`;
             break;
@@ -323,6 +328,15 @@ JSVideo.prototype = {
     this.currentObserve.disconnect();
     window.removeEventListener("mousemove", this.observerMouseFun);
     document.querySelector("#root").style.display = "none";
+    const recordList = JSON.parse(
+      window.localStorage.getItem("recordList") || "[]"
+    );
+    recordList.push({
+      initDom: this.dom,
+      actionList: this.actions,
+      time: new Date().toLocaleString(),
+    });
+    window.localStorage.setItem("recordList", JSON.stringify(recordList));
 
     let iframe = document.createElement("iframe");
     iframe.setAttribute("sandbox", "allow-same-origin");

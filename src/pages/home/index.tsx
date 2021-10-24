@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./index.less";
-import webRecord from "/src/helper/record";
-import JSVideo from "/src/helper/video";
+import React, { useEffect, useRef, useState } from 'react';
+import './index.less';
+import webRecord from '/src/helper/record';
+import JSVideo from '/src/helper/video';
 
 const Home = () => {
   const [cardList, setCardList] = useState<number[]>([1]);
@@ -29,9 +29,7 @@ const Home = () => {
   //添加卡片
   const handleAddCard = () => {
     setCardList([...cardList, cardList.length + 1]);
-    (
-      document.querySelector(".card-item") as any
-    ).style.backgroundColor = `#${Math.random().toString(16).slice(-6)}`;
+    (document.querySelector('.card-item') as any).style.backgroundColor = `#${Math.random().toString(16).slice(-6)}`;
   };
 
   //重置卡片
@@ -41,26 +39,26 @@ const Home = () => {
 
   return (
     <>
-      <header className="font-size-32 text-center mt-24">web record</header>
-      <section className="box-cont mt-24">
-        <div className="flex-center mt-24">
-          <button className="theme-btn" onClick={handleStartRecord}>
+      <header className='font-size-32 text-center mt-24'>web record</header>
+      <section className='box-cont mt-24'>
+        <div className='flex-center mt-24'>
+          <button className='theme-btn' onClick={handleStartRecord}>
             Start Record
           </button>
-          <button className="theme-btn ml-16" onClick={handleReplayRecord}>
+          <button className='theme-btn ml-16' onClick={handleReplayRecord}>
             Replay Record
           </button>
-          <button className="theme-btn ml-16" onClick={handleAddCard}>
+          <button className='theme-btn ml-16' onClick={handleAddCard}>
             Add Card
           </button>
-          <button className="theme-btn ml-16" onClick={handleResetCard}>
+          <button className='theme-btn ml-16' onClick={handleResetCard}>
             Reset
           </button>
         </div>
 
-        <ul className="mt-24 flex flex-wrap card-cont">
+        <ul className='mt-24 flex flex-wrap card-cont'>
           {cardList.map((it) => (
-            <li className="flex-center card-item" key={it}>
+            <li className='flex-center card-item' key={it}>
               {it}
             </li>
           ))}
