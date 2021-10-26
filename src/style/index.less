@@ -106,5 +106,9 @@ ul {
   width: 32px;
   height: 32px;
   background: url('https://img.tukuppt.com/ad_preview/00/29/44/n0YQFVPBkZ.jpg!/both/32x32');
-  transition: 0.1s;
+  opacity: 0;
+  &.active {
+    transition: 0.1s;
+    opacity: 1;
+  }
 }

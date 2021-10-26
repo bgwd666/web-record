@@ -52,6 +52,7 @@ class ReplayRecord extends virtualDom {
         const doc = iframe.contentDocument!,
           root = doc.documentElement,
           html = this.deSerialization(this.initDom!); //反序列化
+          root.style.opacity = '0';
         //根元素属性附加
         for (const { name, value } of Array.from(html.attributes)) {
           root.setAttribute(name, value);
@@ -65,6 +66,9 @@ class ReplayRecord extends virtualDom {
         const mouse = document.createElement('div');
         mouse.className = 'app-mouse';
         doc.body.appendChild(mouse);
+        setTimeout(() => {
+          root.style.opacity = '1';
+        }, 50);
         re(1);
       };
       document.body.appendChild(iframe);
@@ -80,7 +84,7 @@ class ReplayRecord extends virtualDom {
     console.log('all actionList', this.actionList);
     let appMouse: HTMLElement | null = null;
     const timeOffset = 16.7; //一帧的时间间隔大概为16.7ms
-    let startTime = this.actionList[0].timestamp; //开始时间戳
+    let startTime = this.actionList[0].timestamp - 1000; //开始时间戳 减一秒是缓冲一下
 
     const state = () => {
       const action = this.actionList[0];
@@ -126,7 +130,10 @@ class ReplayRecord extends virtualDom {
           //鼠标
           case EActionType.ACTION_TYPE_MOUSE:
             console.log('action>>>>>>> [mouse]', 'targetEl', element);
-            !appMouse && (appMouse = element.querySelector('.app-mouse'));
+            if (!appMouse) {
+              appMouse = element.querySelector('.app-mouse');
+              appMouse?.classList.add('active');
+            }
             appMouse!.style.transform = `translate(${action.pageX}px,${action.pageY}px)`;
             break;
         }

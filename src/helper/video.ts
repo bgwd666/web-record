@@ -56,7 +56,7 @@ JSVideo.prototype = {
     if (!id) {
       //解析新元素才做映射
       id = this.getID();
-      console.log("getID", element, id);
+      // console.log("getID", element, id);
       this.idMap.set(element, id); //元素为键，ID为值
     }
     return {
