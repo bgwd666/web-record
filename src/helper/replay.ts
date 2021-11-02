@@ -52,7 +52,7 @@ class ReplayRecord extends virtualDom {
         const doc = iframe.contentDocument!,
           root = doc.documentElement,
           html = this.deSerialization(this.initDom!); //反序列化
-          root.style.opacity = '0';
+        root.style.opacity = '0';
         //根元素属性附加
         for (const { name, value } of Array.from(html.attributes)) {
           root.setAttribute(name, value);
@@ -127,12 +127,21 @@ class ReplayRecord extends virtualDom {
             });
             break;
 
+          //文本变化
+          case EActionType.ACTION_TYPE_TEXT:
+            console.log('action>>>>>>> [text]', 'targetEl', element);
+            element.textContent = action.newText!;
+            break;
+
           //鼠标
           case EActionType.ACTION_TYPE_MOUSE:
             console.log('action>>>>>>> [mouse]', 'targetEl', element);
             if (!appMouse) {
               appMouse = element.querySelector('.app-mouse');
-              appMouse?.classList.add('active');
+              // 延时是为了防止鼠标从页面左侧移过来(有transition)
+              setTimeout(() => {
+                appMouse?.classList.add('active');
+              }, 50);
             }
             appMouse!.style.transform = `translate(${action.pageX}px,${action.pageY}px)`;
             break;

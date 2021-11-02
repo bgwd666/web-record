@@ -1,24 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import './index.less';
+import { hxMessage } from '/src/helper/message';
 import WebRecord from '/src/helper/record';
-import JSVideo from '/src/helper/video';
 
 const Home = () => {
   const [cardList, setCardList] = useState<number[]>([1]);
   const [isRecording, setIsRecording] = useState(false);
   const [colorCache] = useState<{ [key: number]: string }>({});
-  const pageRecord = useRef<WebRecord>(new WebRecord());
+  const pageRecord = useRef<WebRecord>(new WebRecord()).current;
   const history = useHistory();
 
   //开始|结束 录制
   const handleStartRecord = () => {
     if (isRecording) {
-      pageRecord.current.end();
       setIsRecording(false);
+      pageRecord.end();
+      hxMessage('end record!', 'success');
     } else {
       setIsRecording(true);
-      pageRecord.current.start();
+      pageRecord.start();
+      hxMessage('start record!', 'success');
     }
   };
 
@@ -50,7 +52,7 @@ const Home = () => {
 
   return (
     <>
-      <header className='font-size-32 text-center mt-24'>web record</header>
+      <header className='font-size-32 text-center mt-32'>web record</header>
       <section className='box-cont mt-24'>
         <div className='flex-center mt-24'>
           <button className='theme-btn' onClick={handleStartRecord}>

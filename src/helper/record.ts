@@ -65,21 +65,33 @@ class WebRecord extends virtualDom {
       mutations.forEach((mutation) => {
         const { type, target, oldValue, attributeName, addedNodes, removedNodes } = mutation;
         console.log(type);
+        const targetNode = target as Element;
 
         switch (type) {
           case 'attributes':
-            const value = (target as Element).getAttribute(attributeName!);
+            const value = targetNode.getAttribute(attributeName!);
             console.log('attributes', value);
-            this.setAttributeAction(target as Element);
+            this.setAction(targetNode, { type: EActionType.ACTION_TYPE_ATTRIBUTE });
             break;
+
           case 'childList':
-            this.setAttributeAction(target as Element, {
+            this.setAction(targetNode, {
               type: EActionType.ACTION_TYPE_ELEMENT,
               //新增的node 保存的是序列化的dom
               addedNodes: Array.from(addedNodes, (el) => this.serialization(el as Element)),
               //删除的node 保存的是node 对应的id
               removedNodes: Array.from(removedNodes, (el) => this.idMap.get(el as Element)),
             });
+            break;
+            
+          case 'characterData':
+            // 文本变化 target 是文本, parentNode是容器
+            this.setAction(targetNode.parentNode as Element, {
+              type: EActionType.ACTION_TYPE_TEXT,
+              //@ts-ignore
+              newText: targetNode.parentNode.textContent,
+            });
+            break;
         }
       });
     });
@@ -110,25 +122,19 @@ class WebRecord extends virtualDom {
   }
 
   /**
-   * 配置修改属性的动作
-   */
-  setAttributeAction(element: Element, otherParam = {}) {
-    let attributes = {
-      type: EActionType.ACTION_TYPE_ATTRIBUTE,
-      ...otherParam,
-    };
-    // element.value && (attributes.value = element.value);
-    console.log('setAttributeAction', attributes);
-    this.setAction(element, attributes);
-  }
-
-  /**
    * 配置修改动作
    */
   setAction(element: Element, otherParam: { type: EActionType; [key: string]: any }) {
     //由于element是对象，因此Map中的key会自动更新
     const id = this.idMap.get(element) as number;
-    console.log('+++++++setAction+++++', otherParam, 'tagId', id, element);
+    console.log(
+      '+++++++setAction+++++',
+      'type:',
+      EActionType[otherParam.type],
+      otherParam,
+      'target',
+      element,
+    );
     const action = Object.assign(
       this.parseElement(element, id),
       { timestamp: Date.now() },

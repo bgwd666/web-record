@@ -99,6 +99,7 @@ ul {
   justify-content: center;
 }
 
+// 鼠标
 .app-mouse {
   position: absolute;
   left: 0;
@@ -110,5 +111,27 @@ ul {
   &.active {
     transition: 0.1s;
     opacity: 1;
+  }
+}
+
+// 全局气泡消息
+.hx-message {
+  position: fixed;
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 4px 7px 14px #bebebe;
+  border: 1px solid #ededed;
+  transition: .3s;
+  &.success {
+    color: #00c2a7;
+    border-color: #00c2a7;
+  }
+  &.error {
+    color: #f77062;
+    border-color: #f77062;
   }
 }
