@@ -18,6 +18,7 @@ export enum EActionType {
   ACTION_TYPE_ELEMENT = 2, // 元素增减
   ACTION_TYPE_TEXT = 3, // 文本变化
   ACTION_TYPE_MOUSE = 4, // 鼠标
+  ACTION_TYPE_INPUT = 5, // 输入框
 }
 
 /**
@@ -31,6 +32,7 @@ export interface IAction extends ISerializationDom {
   addedNodes?: ISerializationDom[]; // 新增node
   removedNodes?: number[]; // 删除node 已经被转为 元素在map中的id
   newText?: string; // 新的文本
+  inputValue?: string; // 输入框的值
 }
 
 /**

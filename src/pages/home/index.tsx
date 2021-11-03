@@ -51,7 +51,7 @@ const Home = () => {
   };
 
   return (
-    <>
+    <div className="home-page">
       <header className='font-size-32 text-center mt-32'>web record</header>
       <section className='box-cont mt-24'>
         <div className='flex-center mt-24'>
@@ -68,8 +68,10 @@ const Home = () => {
             Reset Card
           </button>
         </div>
-
-        <ul className='mt-24 flex flex-wrap card-cont'>
+        <div className="flex-center mt-32">
+          <input type="text" className="h-input" />
+        </div>
+        <ul className='mt-12 flex flex-wrap card-cont'>
           {cardList.map((it) => (
             <li
               className='flex-center card-item'
@@ -80,7 +82,7 @@ const Home = () => {
           ))}
         </ul>
       </section>
-    </>
+    </div>
   );
 };
 

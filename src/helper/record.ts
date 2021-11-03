@@ -7,21 +7,29 @@ class WebRecord extends virtualDom {
   public actionList: IAction[] = []; //动作
   public mouseTimer: number = 0; //鼠标timer;
   public observerMouseBindFun: (e: MouseEvent) => void; //监听鼠标函数;
+  public observerInputBindFun: (e: Event) => void; //监听鼠标函数;
 
   constructor() {
     super();
     // 解决 addEventListener 里面this指向问题, 及解除绑定
     this.observerMouseBindFun = this.observerMouse.bind(this);
+    this.observerInputBindFun = this.observerInput.bind(this);
   }
 
   /**
    * 开始录制
    */
   start() {
+    // 监听dom
     this.observer();
+    //记录首次屏幕快照
     this.initDom = this.serialization(document.documentElement);
     // 监听鼠标
     window.addEventListener('mousemove', this.observerMouseBindFun);
+    // 监听输入框
+    window.addEventListener('input', this.observerInputBindFun, {
+      capture: true, //捕获
+    });
     console.log('序列化', this.initDom);
     console.log('map', this.idMap);
   }
@@ -34,6 +42,10 @@ class WebRecord extends virtualDom {
     this.currentObserve?.disconnect();
     // 停止鼠标监听
     window.removeEventListener('mousemove', this.observerMouseBindFun);
+    //停止监听输入框
+    window.removeEventListener('input', this.observerInputBindFun, {
+      capture: true, //捕获
+    });
     // 保存本地
     const recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]');
     recordList.push({
@@ -83,7 +95,7 @@ class WebRecord extends virtualDom {
               removedNodes: Array.from(removedNodes, (el) => this.idMap.get(el as Element)),
             });
             break;
-            
+
           case 'characterData':
             // 文本变化 target 是文本, parentNode是容器
             this.setAction(targetNode.parentNode as Element, {
@@ -106,12 +118,14 @@ class WebRecord extends virtualDom {
     });
   }
 
-  // 监听鼠标
+  /**
+   * 监听鼠标
+   * @param e MouseEvent
+   */
   observerMouse(e: MouseEvent) {
     if (Date.now() - this.mouseTimer > 100) {
       console.log(e);
       this.mouseTimer = Date.now();
-      console.log('add ACTION_TYPE_MOUSE');
       this.setAction(document.body, {
         type: EActionType.ACTION_TYPE_MOUSE,
         timestamp: Date.now(),
@@ -119,6 +133,16 @@ class WebRecord extends virtualDom {
         pageY: e.clientY,
       });
     }
+  }
+
+  /**
+   * 监听输入框
+   */
+  observerInput(e: Event) {
+    this.setAction(e.target as HTMLInputElement, {
+      type: EActionType.ACTION_TYPE_INPUT,
+      inputValue: (e.target as HTMLInputElement).value
+    });
   }
 
   /**

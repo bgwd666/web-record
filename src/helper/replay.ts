@@ -145,6 +145,12 @@ class ReplayRecord extends virtualDom {
             }
             appMouse!.style.transform = `translate(${action.pageX}px,${action.pageY}px)`;
             break;
+
+          //输入框
+          case EActionType.ACTION_TYPE_INPUT:
+            console.log('action>>>>>>> [input]', 'targetEl', element);
+            (element as HTMLInputElement).value = action.inputValue!;
+            break;
         }
       }
       startTime += timeOffset; //最大程度的模拟真实的时间差
