@@ -106,8 +106,6 @@ class ReplayRecord extends virtualDom {
               //更新属性
               element.setAttribute(name, action.attributes[name]);
             }
-            //触发defineProperty拦截，拆分成两个插件会避免该问题
-            // action.value && (element.value = action.value);
             break;
 
           //节点修改
