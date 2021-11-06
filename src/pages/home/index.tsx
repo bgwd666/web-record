@@ -52,15 +52,22 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <header className='font-size-32 text-center mt-32'>web record</header>
-      <section className='box-cont mt-24'>
-        <div className='flex-center mt-24'>
+      <header className='font-size-32 text-center mt-24'>web record</header>
+      <section className='box-cont'>
+        <div className='flex-center top-handle mt-24 pb-16'>
           <button className='theme-btn' onClick={handleStartRecord}>
             {isRecording ? 'End' : 'Start'} Record
           </button>
-          <button className='theme-btn ml-16' onClick={goReplayRecordPage}>
+          <button className='btn ml-64' onClick={goReplayRecordPage}>
             Go Replay Record
           </button>
+        </div>
+
+        <div className="flex-center mt-48">
+          <input type="text" className="h-input" placeholder="Say something?" />
+        </div>
+
+        <div className='flex'>
           <button className='theme-btn ml-16' onClick={handleAddCard}>
             Add Card
           </button>
@@ -68,9 +75,7 @@ const Home = () => {
             Reset Card
           </button>
         </div>
-        <div className="flex-center mt-32">
-          <input type="text" className="h-input" />
-        </div>
+
         <ul className='mt-12 flex flex-wrap card-cont'>
           {cardList.map((it) => (
             <li

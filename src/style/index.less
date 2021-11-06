@@ -45,18 +45,29 @@ ul {
   max-width: 1200px;
   margin: 0 auto;
 }
-
-.theme-btn {
+.btn {
   height: 32px;
   padding: 4px 16px;
-  background-color: #2361f9;
-  color: #fff;
-  border: 1px solid transparent;
-  border-radius: 2px;
+  color: #375375;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   transition: 0.3s;
   outline: none;
   &:hover {
+    color: #2361f9;
+    border-color: #2361f9;
+  }
+}
+
+.theme-btn {
+  .btn();
+  background-color: #2361f9;
+  color: #fff;
+  border: 1px solid transparent;
+  &:hover {
     background-color: darken(#2361f9, 6%);
+    color: #fff;
   }
   &:active {
     background-color: darken(#2361f9, 10%);
