@@ -19,6 +19,7 @@ class virtualDom {
     let element = this.parseElement(parent);
     if (parent.children.length == 0) {
       parent.textContent && (element.textContent = parent.textContent);
+      parent.value && (element.value = parent.value);
       return element;
     }
     Array.from(parent.children, (child) => {
@@ -82,6 +83,7 @@ class virtualDom {
       element.setAttribute(name, obj.attributes[name]);
     }
     obj.textContent && (element.textContent = obj.textContent);
+    obj.value && (element.value = obj.value);
     return element;
   }
 }
