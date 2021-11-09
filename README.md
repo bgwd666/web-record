@@ -4,6 +4,7 @@
 
 2, npm run start 或者 yarn start
 
+[掘金文章](https://juejin.cn/post/7027369232077701151)
 ## 实现原理:
 
 ### 录屏:
