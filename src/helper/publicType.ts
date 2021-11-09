@@ -7,6 +7,7 @@ export interface ISerializationDom {
   tagName: string;
   attributes: { [key: string]: string };
   textContent?: string;
+  value?: string;
 }
 
 /**
