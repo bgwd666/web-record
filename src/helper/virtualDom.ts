@@ -19,10 +19,12 @@ class virtualDom {
     let element = this.parseElement(parent);
     if (parent.children.length == 0) {
       parent.textContent && (element.textContent = parent.textContent);
-      parent.value && (element.value = parent.value);
+      if (parent instanceof HTMLInputElement) {
+        parent.value && (element.value = parent.value);
+      }
       return element;
     }
-    Array.from(parent.children, (child) => {
+    Array.from(parent.children, (child: Element) => {
       element.children.push(this.serialization(child));
     });
     return element;
@@ -83,7 +85,9 @@ class virtualDom {
       element.setAttribute(name, obj.attributes[name]);
     }
     obj.textContent && (element.textContent = obj.textContent);
-    obj.value && (element.value = obj.value);
+    if (element instanceof HTMLInputElement) {
+      obj.value && (element.value = obj.value);
+    }
     return element;
   }
 }
